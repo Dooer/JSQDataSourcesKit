@@ -165,12 +165,14 @@ public final class CollectionViewDataSourceProvider <
         return { [unowned self] collectionView, sourceIndexPath, destinationIndexPath in
             let item = self.sections[sourceIndexPath.section].items.remove(at: sourceIndexPath.item)
             self.sections[destinationIndexPath.section].items.insert(item, at: destinationIndexPath.item)
-            
-            guard let cell = collectionView.cellForItem(at: destinationIndexPath) as? CellFactory.Cell else {
-                fatalError("No cell for moved item")
+            var cell: CellFactory.Cell?
+            if let destinationCell = collectionView.cellForItem(at: destinationIndexPath) as? CellFactory.Cell {
+                cell = destinationCell
+            } else if let originCell = collectionView.cellForItem(at: sourceIndexPath) as? CellFactory.Cell {
+                cell = originCell
             }
-            
-            userMovedHandler(collectionView, cell, item, sourceIndexPath, destinationIndexPath)
+            guard let movedCell = cell else { fatalError("No cell for moved item") }
+            userMovedHandler(collectionView, movedCell, item, sourceIndexPath, destinationIndexPath)
         }
     }
 }
