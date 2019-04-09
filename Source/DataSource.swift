@@ -163,4 +163,9 @@ extension DataSource: DataSourceProtocol {
         guard section < sections.count else { return nil }
         return sections[section].footerTitle
     }
+
+    /// :nodoc:
+    public mutating func updateItems(inSection section: Int, newItems: [Item]) {
+        sections[section].items = newItems
+    }
 }

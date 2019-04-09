@@ -24,6 +24,7 @@ internal typealias NumberOfItemsInSectionHandler = (Int) -> Int
 
 internal typealias CollectionCellForItemAtIndexPathHandler = (UICollectionView, IndexPath) -> UICollectionViewCell
 internal typealias CollectionSupplementaryViewAtIndexPathHandler = (UICollectionView, String, IndexPath) -> UICollectionReusableView
+internal typealias CollectionCellMoveHandler = (UICollectionView, IndexPath, IndexPath) -> Void
 
 internal typealias TableCellForRowAtIndexPathHandler = (UITableView, IndexPath) -> UITableViewCell
 internal typealias TableTitleForHeaderInSectionHandler = (Int) -> String?
@@ -42,6 +43,7 @@ internal final class BridgedDataSource: NSObject {
 
     var collectionCellForItemAtIndexPath: CollectionCellForItemAtIndexPathHandler?
     var collectionSupplementaryViewAtIndexPath: CollectionSupplementaryViewAtIndexPathHandler?
+    var collectionCellMoveFromIndexPathToIndexPath: CollectionCellMoveHandler?
 
     var tableCellForRowAtIndexPath: TableCellForRowAtIndexPathHandler?
     var tableTitleForHeaderInSection: TableTitleForHeaderInSectionHandler?
@@ -79,6 +81,10 @@ extension BridgedDataSource: UICollectionViewDataSource {
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         return collectionSupplementaryViewAtIndexPath!(collectionView, kind, indexPath)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        collectionCellMoveFromIndexPathToIndexPath?(collectionView, sourceIndexPath, destinationIndexPath)
     }
 }
 

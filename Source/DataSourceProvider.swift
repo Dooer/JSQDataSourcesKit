@@ -168,6 +168,13 @@ extension DataSourceProvider where CellConfig.View: UICollectionViewCell, Supple
                                                                  indexPath: indexPath)
         }
 
+        dataSource.collectionCellMoveFromIndexPathToIndexPath = { collectionView, fromIndexPath, toIndexPath in
+            guard fromIndexPath.section == toIndexPath.section else { return }
+            guard var items = self.dataSource.items(inSection: fromIndexPath.section) else { return }
+            items.swapAt(fromIndexPath.row, toIndexPath.row)
+            self.dataSource.updateItems(inSection: toIndexPath.section, newItems: items)
+        }
+
         return dataSource
     }
 }

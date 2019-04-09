@@ -87,6 +87,11 @@ extension FetchedResultsController: DataSourceProtocol {
     public func footerTitle(inSection section: Int) -> String? {
         return nil
     }
+
+    /// :nodoc:
+    public func updateItems(inSection section: Int, newItems: [Item]) {
+
+    }
 }
 
 extension FetchedResultsController {

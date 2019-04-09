@@ -53,6 +53,9 @@ public protocol DataSourceProtocol {
     /// - Parameter section: A section in the data source.
     /// - Returns: The footer title for the specified section.
     func footerTitle(inSection section: Int) -> String?
+
+    /// - Parameter newItems: New items for the section.
+    mutating func updateItems(inSection section: Int, newItems: [Item])
 }
 
 extension DataSourceProtocol {
