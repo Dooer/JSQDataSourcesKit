@@ -171,7 +171,12 @@ extension DataSourceProvider where CellConfig.View: UICollectionViewCell, Supple
         dataSource.collectionCellMoveFromIndexPathToIndexPath = { collectionView, fromIndexPath, toIndexPath in
             guard fromIndexPath.section == toIndexPath.section else { return }
             guard var items = self.dataSource.items(inSection: fromIndexPath.section) else { return }
-            items.insert(items.remove(at: fromIndexPath.row), at: toIndexPath.row)
+            let item = items.remove(at: fromIndexPath.row)
+            if items.indices.contains(toIndexPath.row) {
+                items.insert(item, at: toIndexPath.row)
+            } else {
+                items.append(item)
+            }
             self.dataSource.updateItems(inSection: toIndexPath.section, newItems: items)
         }
 
